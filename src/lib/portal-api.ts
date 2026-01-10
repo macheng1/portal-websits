@@ -26,6 +26,40 @@ export const fetchTenantData = cache(async (domain: string): Promise<any> => {
   // 3. 回退到 Mock 数据，如果没有匹配域名则返回默认值
   return mockData[domain] || mockData["yuansi"];
 });
+export const fetchProductById = cache(async (id: string): Promise<any> => {
+  // 模拟 API 延迟
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
+  // 1. 遍历所有域名下的数据
+  for (const domain in mockData) {
+    const tenant = mockData[domain];
+
+    if (tenant.products) {
+      // 2. 扁平化所有分类下的 items 并查找
+      const allProducts = tenant.products.flatMap((cat: any) => cat.items);
+      const product = allProducts.find((p: any) => p.id === id);
+
+      if (product) {
+        return {
+          ...product,
+          tenantName: tenant.name, // 附加工厂名称，方便详情页展示
+          // 💡 补充详情页需要的长描述，如果 mock 数据里没写，这里给个默认值
+          description:
+            product.description ||
+            `${product.name} 采用优质 ${product.material} 材质，执行严格的工业标准，确保在高负载环境下表现稳定。`,
+          specs: [
+            { label: "材质标准", value: product.material },
+            { label: "规格尺寸", value: product.diameter },
+            { label: "表面处理", value: "精抛光" },
+            { label: "公差等级", value: "±0.02mm" },
+          ],
+        };
+      }
+    }
+  }
+
+  return null;
+});
 export const mockData: Record<string, any> = {
   // 这里的 key "yuansi" 对应访问路径中的 [domain] 参数
   yuansi: {
@@ -35,6 +69,10 @@ export const mockData: Record<string, any> = {
     contactPerson: "马成",
     phone: "15251092328",
     address: "江苏省兴化市戴南镇工业园区",
+    addressLatLng: {
+      lat: 32.9111,
+      lng: 119.8502,
+    },
     intro: "深耕金属制品业，专注于不锈钢引出棒、紧固件精密加工。",
     slogan: "赋能制造律动，链接工业未来",
 
@@ -45,27 +83,50 @@ export const mockData: Record<string, any> = {
       menuItems: [
         { label: "首页", href: "#home" },
         { label: "产品中心", href: "/portal/wuxi-yuansi/zh/products" },
-        { label: "人才招聘", href: "/portal/wuxi-yuansi/zh/jobs" },
-        { label: "工厂动态", href: "/portal/wuxi-yuansi/zh/posts" },
+        // { label: "人才招聘", href: "/portal/wuxi-yuansi/zh/jobs" },
+        { label: "联系我们", href: "/portal/wuxi-yuansi/zh/contact" },
       ],
       className: "portal-header-custom",
     },
 
     // 3. 产品中心数据 (对应 Section 渲染)
+    // src/lib/mock-api.ts
     products: [
       {
-        id: "p1",
-        name: "不锈钢引出棒 (Terminal Pin)",
-        material: "304 不锈钢",
-        diameter: "2.5mm",
-        isPublic: true,
+        categoryName: "不锈钢引出棒系列",
+        categoryEn: "Terminal Pins",
+        items: [
+          {
+            id: "p1",
+            name: "304 不锈钢引出棒",
+            material: "SUS304",
+            diameter: "2.5mm - 6.0mm",
+            image: "/images/products/pin-304.jpg", // 💡 新增图片路径
+            isPublic: true,
+          },
+          {
+            id: "p2",
+            name: "316L 高耐腐蚀引出棒",
+            material: "SUS316L",
+            diameter: "3.0mm - 8.0mm",
+            image: "/images/products/pin-316l.jpg",
+            isPublic: true,
+          },
+        ],
       },
       {
-        id: "p2",
-        name: "加热管引出棒",
-        material: "316L 不锈钢",
-        diameter: "3.0mm",
-        isPublic: true,
+        categoryName: "加热管配件系列",
+        categoryEn: "Heating Elements",
+        items: [
+          {
+            id: "p3",
+            name: "螺纹式封口塞",
+            material: "碳钢/不锈钢",
+            diameter: "M12 - M24",
+            image: "/images/products/plug.jpg",
+            isPublic: true,
+          },
+        ],
       },
     ],
 
