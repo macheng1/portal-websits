@@ -1,46 +1,65 @@
 {
+  "common": {
+    "more": "查看更多",
+    "back": "返回",
+    "submit": "提交",
+    "loading": "加载中...",
+    "noData": "暂无相关内容"
+  },
   "nav": {
     "home": "首页",
     "products": "产品中心",
     "about": "关于我们",
+    "contact": "联系我们",
     "jobs": "诚聘英才",
     "news": "工厂动态"
   },
   "hero": {
     "greeting": "你好，老板！",
-    "slogan": "赋能制造律动，链接工业未来"
+    "slogan": "赋能制造律动，链接工业未来",
+    "subSlogan": "深耕不锈钢精密加工，为全球加热管厂商提供核心配件支持",
+    "contactBtn": "立即咨询"
   },
   "about": {
-    "title": "关于我们",
-    "tag": "企业简介",
-    "more": "了解更多"
+    "title": "关于元思",
+    "tag": "工厂简介",
+    "history": "发展历程",
+    "advantage": "核心优势",
+    "desc": "坐落于不锈钢名镇戴南，专注于不锈钢引出棒、紧固件等精密零部件的研发与生产。"
   },
   "products": {
     "title": "产品展厅",
     "tag": "核心产品",
-    "material": "材质",
-    "diameter": "直径",
-    "specs": "规格参数",
-    "more": "查看详情"
+    "category": "产品分类",
+    "material": "材质标准",
+    "diameter": "标准直径",
+    "specs": "技术规格",
+    "description": "产品详情",
+    "inquiry": "立即询价",
+    "download": "下载规格书",
+    "related": "相关产品推荐"
   },
-  "jobs": {
-    "title": "诚聘英才",
-    "tag": "加入我们",
-    "salary": "薪资",
-    "count": "招聘人数",
-    "applyBtn": "立即沟通",
-    "unit": "人"
-  },
-  "news": {
-    "title": "工厂动态",
-    "tag": "实时营销",
-    "empty": "暂无动态发布",
-    "readMore": "阅读全文"
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "专业的团队，为您提供精准的工业解决方案",
+    "address": "总部地址",
+    "phone": "咨询热线",
+    "email": "企业邮箱",
+    "rfqTitle": "智能询价系统",
+    "form": {
+      "name": "您的姓名",
+      "email": "联系邮箱",
+      "interest": "产品兴趣",
+      "message": "需求详情",
+      "upload": "点击或拖拽上传图纸 (PDF/JPG)",
+      "submitBtn": "提交询价单",
+      "success": "提交成功！我们的客户经理将尽快联系您。"
+    }
   },
   "footer": {
-    "address": "工厂地址",
-    "contact": "联系方式",
-    "person": "联系人",
-    "support": "技术支持由 引智数链 提供"
+    "quickNav": "快速导航",
+    "support": "技术支持由 引智数链 提供",
+    "copyRight": "© 2026 无锡元思科技 版权所有",
+    "qrcode": "微信扫码联系工厂"
   }
 }

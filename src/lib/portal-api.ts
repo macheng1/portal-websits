@@ -78,10 +78,10 @@ export const mockData: Record<string, any> = {
 
     // 2. 导航栏配置 (对应 INavBarProps 接口)
     navbar: {
-      logoHref: "/",
+      logoHref: "/portal/wuxi-yuansi/zh",
       showLogin: true,
       menuItems: [
-        { label: "首页", href: "#home" },
+        { label: "首页", href: "/portal/wuxi-yuansi/zh" },
         { label: "产品中心", href: "/portal/wuxi-yuansi/zh/products" },
         // { label: "人才招聘", href: "/portal/wuxi-yuansi/zh/jobs" },
         { label: "联系我们", href: "/portal/wuxi-yuansi/zh/contact" },

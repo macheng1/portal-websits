@@ -1,46 +1,65 @@
 {
+  "common": {
+    "more": "View More",
+    "back": "Back",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "noData": "No data available"
+  },
   "nav": {
     "home": "Home",
     "products": "Products",
-    "about": "About",
+    "about": "About Us",
+    "contact": "Contact",
     "jobs": "Careers",
     "news": "News"
   },
   "hero": {
-    "greeting": "Hello, Boss!",
-    "slogan": "Powering Manufacturing Vibe, Linking Industry Future"
+    "greeting": "Hello, Partners!",
+    "slogan": "Empowering Manufacturing, Connecting the Future",
+    "subSlogan": "Specializing in stainless steel precision processing for global heating element manufacturers.",
+    "contactBtn": "Get in Touch"
   },
   "about": {
-    "title": "About Us",
-    "tag": "Profile",
-    "more": "Learn More"
+    "title": "About YuanSi",
+    "tag": "Factory Profile",
+    "history": "Our History",
+    "advantage": "Core Advantages",
+    "desc": "Located in Dainan, the famous stainless steel town, we focus on R&D and production of terminal pins and fasteners."
   },
   "products": {
-    "title": "Product Gallery",
+    "title": "Product Showroom",
     "tag": "Core Products",
+    "category": "Categories",
     "material": "Material",
     "diameter": "Diameter",
-    "specs": "Specifications",
-    "more": "View Detail"
+    "specs": "Technical Specs",
+    "description": "Details",
+    "inquiry": "Inquire Now",
+    "download": "Download Catalog",
+    "related": "Related Products"
   },
-  "jobs": {
-    "title": "Careers",
-    "tag": "Join Us",
-    "salary": "Salary",
-    "count": "Openings",
-    "applyBtn": "Contact Us",
-    "unit": "Pos."
-  },
-  "news": {
-    "title": "Factory Dynamics",
-    "tag": "Updates",
-    "empty": "No recent updates",
-    "readMore": "Read More"
+  "contact": {
+    "title": "Connect with Us",
+    "subtitle": "Our expert team is ready to assist with your industrial solutions.",
+    "address": "Headquarters",
+    "phone": "Sales Hotline",
+    "email": "Email",
+    "rfqTitle": "Smart RFQ System",
+    "form": {
+      "name": "Full Name",
+      "email": "Work Email",
+      "interest": "Product Interest",
+      "message": "Requirements / Message",
+      "upload": "Click or drag to upload drawings (PDF/JPG)",
+      "submitBtn": "Submit Inquiry",
+      "success": "Success! Our manager will contact you shortly."
+    }
   },
   "footer": {
-    "address": "Address",
-    "contact": "Contact",
-    "person": "Contact Person",
-    "support": "Powered by PinLink"
+    "quickNav": "Quick Links",
+    "support": "Technical Support by YZ Link",
+    "copyRight": "© 2026 YuanSi Tech. All Rights Reserved.",
+    "qrcode": "Scan to contact us via WeChat"
   }
 }
