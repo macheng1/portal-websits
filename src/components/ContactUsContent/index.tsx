@@ -18,6 +18,7 @@ import {
   IconComment,
 } from "@douyinfe/semi-icons";
 import Image from "next/image";
+import { AmapSection } from "../AmapSection";
 
 export const ContactUsContent = ({ data }: any) => {
   return (
@@ -64,32 +65,7 @@ export const ContactUsContent = ({ data }: any) => {
 
           {/* 地图占位图 */}
           <div className="relative aspect-video w-full rounded-3xl bg-slate-100 overflow-hidden border border-slate-200">
-            <div className="absolute inset-0 flex items-center justify-center flex-col gap-4">
-              <div className="bg-white/80 backdrop-blur px-6 py-2 rounded-full shadow-sm border border-slate-200 font-medium">
-                交互式全球服务图
-              </div>
-              <div className="w-2 h-2 bg-red-500 rounded-full animate-ping"></div>
-            </div>
-          </div>
-
-          {/* 底部社交按钮 */}
-          <div className="grid grid-cols-2 gap-4 pt-4">
-            <Button
-              size="large"
-              style={{ backgroundColor: "#22c55e", color: "white" }}
-              // icon={<IconMessage />}
-              className="h-14 rounded-xl"
-            >
-              WhatsApp Chat
-            </Button>
-            <Button
-              size="large"
-              style={{ backgroundColor: "#0f172a", color: "white" }}
-              icon={<IconComment />}
-              className="h-14 rounded-xl"
-            >
-              WeChat Support
-            </Button>
+            <AmapSection addressLatLng={data.addressLatLng} />
           </div>
         </div>
 
