@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/app/portal/[domain]/[lang]/layout.tsx
 import { NavBar } from "@/src/components/navbar";
 import { Footer } from "@/src/components/footer";
 import { fetchTenantData } from "@/src/lib/portal-api";
-import { Locale, getDictionary } from "@/src/dictionaries";
+import { getDictionary } from "@/src/dictionaries";
 
 export default async function PortalLayout({
   children,
@@ -10,7 +11,7 @@ export default async function PortalLayout({
 }: {
   children: React.ReactNode;
   // 💡 关键修正 1：params 必须定义为 Promise 类型
-  params: Promise<{ domain: string; lang: Locale }>;
+  params: Promise<{ domain: string; lang: any }>;
 }) {
   const { domain, lang } = await params;
 
