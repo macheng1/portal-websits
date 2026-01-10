@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "home": "首页",
+    "products": "产品中心",
+    "about": "关于我们",
+    "jobs": "诚聘英才",
+    "news": "工厂动态"
+  },
+  "hero": {
+    "greeting": "你好，老板！",
+    "slogan": "赋能制造律动，链接工业未来"
+  },
+  "about": {
+    "title": "关于我们",
+    "tag": "企业简介",
+    "more": "了解更多"
+  },
+  "products": {
+    "title": "产品展厅",
+    "tag": "核心产品",
+    "material": "材质",
+    "diameter": "直径",
+    "specs": "规格参数",
+    "more": "查看详情"
+  },
+  "jobs": {
+    "title": "诚聘英才",
+    "tag": "加入我们",
+    "salary": "薪资",
+    "count": "招聘人数",
+    "applyBtn": "立即沟通",
+    "unit": "人"
+  },
+  "news": {
+    "title": "工厂动态",
+    "tag": "实时营销",
+    "empty": "暂无动态发布",
+    "readMore": "阅读全文"
+  },
+  "footer": {
+    "address": "工厂地址",
+    "contact": "联系方式",
+    "person": "联系人",
+    "support": "技术支持由 引智数链 提供"
+  }
+}

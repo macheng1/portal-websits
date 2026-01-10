@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "about": "About",
+    "jobs": "Careers",
+    "news": "News"
+  },
+  "hero": {
+    "greeting": "Hello, Boss!",
+    "slogan": "Powering Manufacturing Vibe, Linking Industry Future"
+  },
+  "about": {
+    "title": "About Us",
+    "tag": "Profile",
+    "more": "Learn More"
+  },
+  "products": {
+    "title": "Product Gallery",
+    "tag": "Core Products",
+    "material": "Material",
+    "diameter": "Diameter",
+    "specs": "Specifications",
+    "more": "View Detail"
+  },
+  "jobs": {
+    "title": "Careers",
+    "tag": "Join Us",
+    "salary": "Salary",
+    "count": "Openings",
+    "applyBtn": "Contact Us",
+    "unit": "Pos."
+  },
+  "news": {
+    "title": "Factory Dynamics",
+    "tag": "Updates",
+    "empty": "No recent updates",
+    "readMore": "Read More"
+  },
+  "footer": {
+    "address": "Address",
+    "contact": "Contact",
+    "person": "Contact Person",
+    "support": "Powered by PinLink"
+  }
+}
