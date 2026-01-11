@@ -13,7 +13,7 @@ export function proxy(req: NextRequest) {
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
-    /\.(.*)$/.test(pathname)
+    /\.[^/]+$/.test(pathname)
   ) {
     return NextResponse.next();
   }
