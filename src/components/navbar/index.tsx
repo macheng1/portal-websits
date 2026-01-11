@@ -4,7 +4,7 @@ import { Button, SideSheet } from "@douyinfe/semi-ui-19";
 import { IconMenu, IconLanguage, IconChevronDown } from "@douyinfe/semi-icons";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import logoLight from "@/public/logo_light.png";
 import { Dictionary } from "@/src/dictionaries"; // 💡 导入类型定义
 
@@ -29,7 +29,9 @@ export const NavBar: FC<INavBarProps> = ({
   const pathname = usePathname();
   const router = useRouter();
   const langRef = useRef<HTMLDivElement>(null);
-
+  const params = useParams();
+  const domain = (params.domain as string) || "wuxi-yuansi";
+  const lang = (params.lang as string) || "zh";
   useEffect(() => {
     setMounted(true);
     const handleClickOutside = (event: MouseEvent) => {
@@ -49,7 +51,20 @@ export const NavBar: FC<INavBarProps> = ({
       setIsLangOpen(false);
     }
   };
-
+  const desktopMenuItems = [
+    {
+      label: dict?.home,
+      href: `/portal/${domain}/${lang}`,
+    },
+    {
+      label: dict?.products,
+      href: `/portal/${domain}/${lang}/products`,
+    },
+    {
+      label: dict?.contact,
+      href: `/portal/${domain}/${lang}/contact`,
+    },
+  ];
   const isEn = pathname.includes("/en");
 
   return (
@@ -74,7 +89,7 @@ export const NavBar: FC<INavBarProps> = ({
 
         {/* 2. 桌面端菜单 */}
         <div className="hidden md:flex flex-1 items-center ml-10 gap-x-8">
-          {menuItems.map((item, index) => (
+          {desktopMenuItems.map((item, index) => (
             <Link
               key={index}
               href={item.href}
