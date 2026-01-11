@@ -13,7 +13,7 @@ export interface INavBarProps {
   logoHref?: string;
   showLogin?: boolean;
   title?: string;
-  dict: Dictionary; // 💡 传入完整的字典对象
+  dict: Dictionary["nav"]; // 💡 传入完整的字典对象
 }
 
 export const NavBar: FC<INavBarProps> = ({
