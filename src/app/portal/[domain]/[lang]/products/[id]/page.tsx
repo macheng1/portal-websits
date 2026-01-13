@@ -2,7 +2,6 @@
 
 import { ProductDetailContent } from "@/src/components/portal/ProductDetailContent";
 import { fetchProductById } from "@/src/lib/portal-api";
-import { Breadcrumb } from "@douyinfe/semi-ui-19";
 
 export default async function ProductDetailPage({
   params,
@@ -10,7 +9,7 @@ export default async function ProductDetailPage({
   params: Promise<{ domain: string; lang: string; id: string }>;
 }) {
   const { domain, lang, id } = await params;
-  const product = await fetchProductById(id); // 获取单个产品详情
+  const product = await fetchProductById(domain, id); // 获取单个产品详情
 
   if (!product) return <div className="p-20 text-center">产品信息不存在</div>;
 

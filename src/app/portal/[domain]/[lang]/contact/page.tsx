@@ -27,7 +27,7 @@ export default async function ContactPage({
 
   return (
     <div className="bg-white min-h-screen">
-      <ContactUsContent data={data} />
+      <ContactUsContent data={data} domain={domain} />
     </div>
   );
 }

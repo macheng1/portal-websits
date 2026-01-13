@@ -75,13 +75,6 @@ export const NavBar: FC<INavBarProps> = ({
           href={logoHref}
           className="flex items-center no-underline shrink-0 group"
         >
-          <Image
-            src={logoLight}
-            alt="Logo"
-            width={70}
-            height={20}
-            className="group-hover:opacity-80 transition-opacity"
-          />
           <span className="ml-3 font-bold text-slate-900 text-sm md:text-base tracking-tight truncate max-w-[120px]">
             {title}
           </span>
