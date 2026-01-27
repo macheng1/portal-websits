@@ -2,13 +2,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import {
-  Form,
-  Select,
-  Button,
-  Toast,
-  Notification,
-} from "@douyinfe/semi-ui-19";
+import { Form, Button, Toast, Notification } from "@douyinfe/semi-ui-19";
 import {
   IconPhone,
   IconMail,
@@ -61,7 +55,7 @@ export const ContactUsContent = ({ data, domain }: any) => {
       : "";
 
     // 排除原始 files 数组，构建最终提交数据
-    const { files, ...restValues } = values;
+    const { /* files, */ ...restValues } = values;
     const submitValues = { ...restValues, attachments };
 
     setLoading(true);
