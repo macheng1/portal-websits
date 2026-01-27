@@ -150,7 +150,7 @@ export const ProductDetailContent = ({ product }: any) => {
                 更新日期
               </div>
               <div className="text-slate-500 text-base">
-                {new Date(product.updatedAt).toLocaleDateString()}
+                {new Date(product.updatedAt).toLocaleDateString("en-US")}
               </div>
             </div>
           </div>

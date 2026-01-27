@@ -37,16 +37,17 @@ export const fetchTenantData = cache(async (domain: string): Promise<any> => {
     const response = await request(`${API_BASE}/portal/${domain}/init`, {
       next: { revalidate: 0 },
     });
-    console.log("🚀 ~ response:", response);
 
     if (!response.ok) throw new Error("Backend unsync");
 
     const data = (await response.json()).data;
-    console.log("🚀 ~ data:", data);
 
     // 💡 核心优化：将后端配置转换为前端组件需要的格式
     return data;
-  } catch (error) {}
+  } catch (error) {
+    // 生产环境建议使用 Sentry 等错误追踪服务
+    console.error("Failed to fetch tenant data");
+  }
 });
 
 /**
@@ -87,21 +88,24 @@ export const fetchProductById = cache(
           // ...如有其他字段可补充
         };
       }
-    } catch (error) {
-      console.error("Fetch Product Error:", error);
+    } catch {
+      console.error("Failed to fetch product");
     }
     return null;
   }
 );
+/**
+ * 提交询价表单（通过 API 代理）
+ */
 export const submitInquiry = async (domain: string, values: any) => {
-  return await request(`${API_BASE}/portal/${domain}/inquiry`, {
+  return await request(`/api/portal/${domain}/inquiry`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(values),
   });
 };
 /**
- * 💡 [新增] 改造 4：上传文件接口
+ * 上传文件（通过 API 代理）
  * 支持多文件，自动构建 FormData
  */
 export const uploadFiles = async (files: File | File[]): Promise<any> => {
@@ -113,7 +117,7 @@ export const uploadFiles = async (files: File | File[]): Promise<any> => {
     formData.append("file", files);
   }
 
-  const response = await request(`${API_BASE}/upload/fileList`, {
+  const response = await request(`/api/upload/fileList`, {
     method: "POST",
     body: formData,
   });
