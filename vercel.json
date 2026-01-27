@@ -30,7 +30,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://webapi.amap.com https://restapi.amap.com; style-src 'self' 'unsafe-inline' https://webapi.amap.com; img-src 'self' data: blob: https://webapi.amap.com http://macheng123.oss-cn-hangzhou.aliyuncs.com https://macheng123.oss-cn-hangzhou.aliyuncs.com; font-src 'self' data:; connect-src 'self' https://webapi.amap.com https://restapi.amap.com; frame-src https://webapi.amap.com; worker-src 'self' blob:; base-uri 'self'; form-action 'self';"
+          "value": "default-src *; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data: blob:; font-src * data:; connect-src *; frame-src *; worker-src * blob:; base-uri *; form-action *;"
         }
       ]
     }
