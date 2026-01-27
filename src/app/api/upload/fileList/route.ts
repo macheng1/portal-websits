@@ -19,8 +19,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 文件验证
-    const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+    // 文件验证 - Vercel 免费版限制 4.5MB，这里设置为 4MB
+    const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
     const ALLOWED_TYPES = [
       "application/pdf",
       "image/jpeg",

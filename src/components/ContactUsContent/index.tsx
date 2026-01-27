@@ -188,6 +188,10 @@ export const ContactUsContent = ({ data, domain }: any) => {
               dragIcon={<IconUpload size="extra-large" />}
               customRequest={handleCustomUpload}
               accept=".pdf,.jpg,.png,.dwg,.zip"
+              limit={{
+                maxSize: 4 * 1024, // 4MB (单位是 KB)
+              }}
+              tip="支持 PDF、JPG、PNG、DWG、ZIP 格式，单个文件不超过 4MB"
             />
 
             <Button
