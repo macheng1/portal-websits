@@ -183,16 +183,16 @@ export const ContactUsContent = ({ data, domain }: any) => {
             <Form.Upload
               action=""
               field="files"
-              label="图纸附件"
+              label="图纸附件 (最大 4MB)"
               draggable={true}
               dragIcon={<IconUpload size="extra-large" />}
               customRequest={handleCustomUpload}
               accept=".pdf,.jpg,.png,.dwg,.zip"
-              limit={{
-                maxSize: 4 * 1024, // 4MB (单位是 KB)
-              }}
-              tip="支持 PDF、JPG、PNG、DWG、ZIP 格式，单个文件不超过 4MB"
+              limit={4 * 1024}
             />
+            <p className="text-xs text-slate-400 -mt-3 mb-4">
+              支持 PDF、JPG、PNG、DWG、ZIP 格式
+            </p>
 
             <Button
               htmlType="submit"

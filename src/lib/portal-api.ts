@@ -16,7 +16,7 @@ function generateTraceId(): string {
  */
 async function request(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<Response> {
   const traceId = generateTraceId();
 
@@ -57,7 +57,7 @@ export const fetchProductById = cache(
   async (domain: string, id: string): Promise<any> => {
     try {
       const response = await request(
-        `${API_BASE}/portal/${domain}/products/${id}`
+        `${API_BASE}/portal/${domain}/products/${id}`,
       );
 
       if (response.ok) {
@@ -92,20 +92,20 @@ export const fetchProductById = cache(
       console.error("Failed to fetch product");
     }
     return null;
-  }
+  },
 );
 /**
- * 提交询价表单（通过 API 代理）
+ * 提交询价表单（直接调用后端API）
  */
 export const submitInquiry = async (domain: string, values: any) => {
-  return await request(`/api/portal/${domain}/inquiry`, {
+  return await request(`${API_BASE}/portal/${domain}/inquiry`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(values),
   });
 };
 /**
- * 上传文件（通过 API 代理）
+ * 上传文件（直接调用后端API）
  * 支持多文件，自动构建 FormData
  */
 export const uploadFiles = async (files: File | File[]): Promise<any> => {
@@ -117,7 +117,7 @@ export const uploadFiles = async (files: File | File[]): Promise<any> => {
     formData.append("file", files);
   }
 
-  const response = await request(`/api/upload/fileList`, {
+  const response = await request(`${API_BASE}/upload/fileList`, {
     method: "POST",
     body: formData,
   });

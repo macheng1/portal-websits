@@ -12,6 +12,12 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const files = formData.getAll("file");
 
+    console.log("Upload request:", {
+      fileCount: files.length,
+      clientIP,
+      files: files.map((f: any) => ({ name: f.name, size: f.size, type: f.type })),
+    });
+
     if (!files || files.length === 0) {
       return NextResponse.json(
         { error: "请选择要上传的文件" },
@@ -53,11 +59,14 @@ export async function POST(request: NextRequest) {
     // 转发到真实后端 API
     const apiUrl = process.env.API_URL;
     if (!apiUrl) {
+      console.error("API_URL environment variable is not set");
       return NextResponse.json(
-        { error: "服务器配置错误" },
+        { error: "服务器配置错误，请联系管理员" },
         { status: 500 }
       );
     }
+
+    console.log("Forwarding to:", `${apiUrl}/upload/fileList`);
 
     const response = await fetch(`${apiUrl}/upload/fileList`, {
       method: "POST",
