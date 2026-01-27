@@ -172,24 +172,11 @@ export const ContactUsContent = ({ data, domain }: any) => {
               />
             </div>
 
-            <Form.Select
-              field="interest"
-              label="产品意向"
-              placeholder="请选择产品类型"
-              className="w-full"
-              size="large"
-              rules={[{ required: true, message: "请选择一个选项" }]}
-            >
-              <Select.Option value="不锈钢引出棒">不锈钢引出棒</Select.Option>
-              <Select.Option value="加热管配件">加热管配件</Select.Option>
-              <Select.Option value="非标定制">非标定制</Select.Option>
-              <Select.Option value="其他">其他</Select.Option>
-            </Form.Select>
-
             <Form.TextArea
               field="message"
               label="需求详情"
               placeholder="请描述您的具体需求或技术指标..."
+              rules={[{ required: true, message: "该项为必填" }]}
               rows={4}
             />
 

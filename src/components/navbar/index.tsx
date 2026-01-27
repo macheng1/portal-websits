@@ -169,7 +169,7 @@ export const NavBar: FC<INavBarProps> = ({
         <SideSheet
           title={
             <div className="flex items-center gap-2">
-              <Image src={logoLight} alt="Logo" width={50} height={15} />
+              {/* <Image src={logoLight} alt="Logo" width={50} height={15} /> */}
               <span className="text-sm font-bold">{title}</span>
             </div>
           }
@@ -191,7 +191,7 @@ export const NavBar: FC<INavBarProps> = ({
               ))}
             </div>
 
-            <div className="border-t border-slate-100 pt-6 mt-6 space-y-4">
+            {/* <div className="border-t border-slate-100 pt-6 mt-6 space-y-4">
               <div className="flex justify-around bg-slate-50 p-1 rounded-xl">
                 <button
                   onClick={() => handleLanguageChange("zh")}
@@ -201,7 +201,6 @@ export const NavBar: FC<INavBarProps> = ({
                       : "text-slate-500"
                   }`}
                 >
-                  {/* 💡 移动端底部切换文本 */}
                   中文
                 </button>
                 <button
@@ -224,7 +223,7 @@ export const NavBar: FC<INavBarProps> = ({
                   {isEn ? "Login" : "登录"}
                 </Button>
               )}
-            </div>
+            </div> */}
           </div>
         </SideSheet>
       </div>

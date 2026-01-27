@@ -28,6 +28,7 @@ export default async function PortalHome({
 }) {
   const { domain, lang } = await params;
   const data = await fetchTenantData(domain);
+  console.log("🚀 ~ PortalHome ~ data:", data);
 
   if (!data) return <div className="p-20 text-center">未找到该工厂信息</div>;
 

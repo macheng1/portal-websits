@@ -4,13 +4,38 @@ import { cache } from "react";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
 /**
+ * 生成唯一的 trace-id
+ * 格式: timestamp-randomString
+ */
+function generateTraceId(): string {
+  return `${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
+}
+
+/**
+ * 封装的 request 函数，自动添加 x-trace-id
+ */
+async function request(
+  url: string,
+  options: RequestInit = {}
+): Promise<Response> {
+  const traceId = generateTraceId();
+
+  return fetch(url, {
+    ...options,
+    headers: {
+      ...options.headers,
+      "x-trace-id": traceId,
+    },
+  });
+}
+
+/**
  * 💡 改造 1：获取门户初始化全量数据
  */
 export const fetchTenantData = cache(async (domain: string): Promise<any> => {
   try {
-    // 调用 NestJS 新写的 init 接口
-    const response = await fetch(`${API_BASE}/portal/${domain}/init`, {
-      next: { revalidate: 0 }, // 缓存一小时
+    const response = await request(`${API_BASE}/portal/${domain}/init`, {
+      next: { revalidate: 0 },
     });
     console.log("🚀 ~ response:", response);
 
@@ -30,7 +55,7 @@ export const fetchTenantData = cache(async (domain: string): Promise<any> => {
 export const fetchProductById = cache(
   async (domain: string, id: string): Promise<any> => {
     try {
-      const response = await fetch(
+      const response = await request(
         `${API_BASE}/portal/${domain}/products/${id}`
       );
 
@@ -69,7 +94,7 @@ export const fetchProductById = cache(
   }
 );
 export const submitInquiry = async (domain: string, values: any) => {
-  return await fetch(`${API_BASE}/portal/${domain}/inquiry`, {
+  return await request(`${API_BASE}/portal/${domain}/inquiry`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(values),
@@ -88,9 +113,7 @@ export const uploadFiles = async (files: File | File[]): Promise<any> => {
     formData.append("file", files);
   }
 
-  // 注意：使用 fetch 发送 FormData 时，不要手动设置 Content-Type 头部
-  // 浏览器会自动设置包含 boundary 的 multipart/form-data
-  const response = await fetch(`${API_BASE}/upload/fileList`, {
+  const response = await request(`${API_BASE}/upload/fileList`, {
     method: "POST",
     body: formData,
   });
