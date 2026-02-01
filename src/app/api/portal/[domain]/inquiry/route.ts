@@ -15,6 +15,45 @@ export async function POST(
     const { domain } = await params;
     const body = await request.json();
 
+    console.log("收到请求体:", {
+      hasCaptchaToken: !!body.captchaToken,
+    });
+
+    // 验证 hCaptcha token
+    if (!body.captchaToken) {
+      return NextResponse.json(
+        { error: "请完成人机验证" },
+        { status: 400 }
+      );
+    }
+
+    // 向 hCaptcha 服务器验证 token
+    const secretKey = process.env.HCAPTCHA_SECRET_KEY;
+    if (!secretKey) {
+      return NextResponse.json(
+        { error: "服务器配置错误" },
+        { status: 500 }
+      );
+    }
+
+    const verifyResponse = await fetch("https://api.hcaptcha.com/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        secret: secretKey,
+        response: body.captchaToken,
+        remoteip: clientIP,
+      }),
+    });
+
+    const verifyResult = await verifyResponse.json();
+    if (!verifyResult.success) {
+      return NextResponse.json(
+        { error: "验证码验证失败" },
+        { status: 400 }
+      );
+    }
+
     // 基础验证
     if (!body.email || !body.message) {
       return NextResponse.json(

@@ -140,7 +140,7 @@ export const NavBar: FC<INavBarProps> = ({
             </div>
           )}
 
-          {showLogin && (
+          {/* {showLogin && (
             <div className="hidden md:block">
               <Button
                 theme="solid"
@@ -149,10 +149,10 @@ export const NavBar: FC<INavBarProps> = ({
                 className="rounded-full px-5 font-semibold"
               >
                 {/* 💡 换成字典中的登录 */}
-                {isEn ? "Login" : "登录"}
-              </Button>
-            </div>
-          )}
+          {/* {isEn ? "Login" : "登录"}
+              </Button> */}
+          {/* </div> */}
+          {/*  )} */}
 
           {/* 移动端菜单按钮 */}
           <div className="md:hidden flex items-center">

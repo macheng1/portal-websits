@@ -104,6 +104,7 @@ export const submitInquiry = async (domain: string, values: any) => {
     body: JSON.stringify(values),
   });
 };
+
 /**
  * 上传文件（直接调用后端API）
  * 支持多文件，自动构建 FormData

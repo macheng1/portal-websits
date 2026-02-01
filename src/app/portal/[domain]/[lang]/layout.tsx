@@ -24,9 +24,11 @@ export default async function PortalLayout({
   return (
     <div className="min-h-screen flex flex-col">
       {/* 这里的 NavBar 和 Footer 已根据你之前的要求进行了移动端适配 */}
-      <NavBar {...data.navbar} dict={dict.nav} title={data.name} />
+      {data?.navbar && (
+        <NavBar {...data.navbar} dict={dict.nav} title={data.name} />
+      )}
       <main className="flex-grow">{children}</main>
-      <Footer {...data.footer} />
+      {data?.footer && <Footer {...data.footer} />}
     </div>
   );
 }

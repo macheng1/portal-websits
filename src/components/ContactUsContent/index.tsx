@@ -2,7 +2,9 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import { useThrottleFn } from "ahooks";
 import { Form, Button, Toast, Notification } from "@douyinfe/semi-ui-19";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import {
   IconPhone,
   IconMail,
@@ -15,9 +17,72 @@ import { submitInquiry, uploadFiles } from "@/src/lib/portal-api";
 
 export const ContactUsContent = ({ data, domain }: any) => {
   const [loading, setLoading] = useState(false);
-  const formApi = useRef<any>(null); // 用于后续重置表单
+  const [captchaToken, setCaptchaToken] = useState<string>("");
+  const captchaRef = useRef<any>(null);
+  const formApi = useRef<any>(null);
 
-  // 1. 自定义上传逻辑 (保持不变)
+  // 提交表单的原始逻辑
+  const submitForm = async (values: any) => {
+    if (!domain) {
+      Toast.error("未找到站点标识，请稍后再试");
+      return;
+    }
+
+    // 验证 hCaptcha
+    if (!captchaToken) {
+      Toast.error("请完成人机验证");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // 准备附件
+      const attachments = Array.isArray(values.files)
+        ? values.files
+            .map((file: any) => file.url || file.response?.url)
+            .filter(Boolean)
+            .join(",")
+        : "";
+
+      const submitValues = {
+        ...values,
+        attachments,
+        captchaToken, // 添加 hCaptcha token
+      };
+
+      // 提交表单到后端
+      const response: any = await submitInquiry(domain, submitValues);
+
+      if (response.ok) {
+        Toast.success("询价单提交成功！");
+
+        // 重置表单和验证码
+        if (formApi.current) {
+          formApi.current.reset();
+        }
+        setCaptchaToken("");
+        captchaRef.current?.resetCaptcha();
+      } else {
+        const errorResult = await response.json().catch(() => ({}));
+        throw new Error(
+          errorResult.error || errorResult.message || "服务器提交失败",
+        );
+      }
+    } catch (error: any) {
+      const errorMsg = error.message || "网络连接异常，请重试。";
+      Notification.error({
+        title: "提交失败",
+        content: errorMsg,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 使用节流 hook（1秒内只执行一次）
+  const { run: onFormSubmit } = useThrottleFn(submitForm, { wait: 1000 });
+
+  // 1. 自定义上传逻辑
   const handleCustomUpload = async ({
     fileInstance,
     onSuccess,
@@ -29,60 +94,13 @@ export const ContactUsContent = ({ data, domain }: any) => {
 
       onSuccess({
         ...fileInstance,
-        url: fileUrl, // 💡 将 URL 存入对象根部
+        url: fileUrl,
       });
       Toast.success(`${fileInstance.name} 上传成功`);
     } catch (error) {
       console.error("上传失败:", error);
       onError();
       Toast.error(`${fileInstance.name} 上传失败`);
-    }
-  };
-
-  // 2. 核心提交逻辑
-  const onFormSubmit = async (values: any) => {
-    if (!domain) {
-      Toast.error("未找到站点标识，请稍后再试");
-      return;
-    }
-
-    // 💡 修正 attachments 转换逻辑
-    const attachments = Array.isArray(values.files)
-      ? values.files
-          .map((file: any) => file.url || file.response?.url)
-          .filter(Boolean)
-          .join(",")
-      : "";
-
-    // 排除原始 files 数组，构建最终提交数据
-    const { /* files, */ ...restValues } = values;
-    const submitValues = { ...restValues, attachments };
-
-    setLoading(true);
-    try {
-      const response: any = await submitInquiry(domain, submitValues);
-
-      if (response.ok) {
-        Toast.success({
-          content: "询价单提交成功！我们的团队会尽快与您联系。",
-          duration: 3,
-        });
-
-        // 💡 修正重置逻辑：使用我们通过 getFormApi 拿到的引用
-        if (formApi.current) {
-          formApi.current.reset();
-        }
-      } else {
-        const errorResult = await response.json().catch(() => ({}));
-        throw new Error(errorResult.message || "服务器提交失败");
-      }
-    } catch (error: any) {
-      Notification.error({
-        title: "提交失败",
-        content: error.message || "网络连接异常，请重试。",
-      });
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -188,6 +206,18 @@ export const ContactUsContent = ({ data, domain }: any) => {
               支持 PDF、JPG、PNG、DWG、ZIP 格式
             </p>
 
+            {/* hCaptcha 验证 */}
+            <div className="py-2">
+              <HCaptcha
+                sitekey={
+                  process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "test-key"
+                }
+                onVerify={(token) => setCaptchaToken(token)}
+                ref={captchaRef}
+                languageOverride="zh-CN"
+              />
+            </div>
+
             <Button
               htmlType="submit"
               type="primary"
@@ -195,6 +225,7 @@ export const ContactUsContent = ({ data, domain }: any) => {
               block
               size="large"
               loading={loading}
+              disabled={loading}
               icon={<IconSend />}
               className="mt-8 h-16 rounded-2xl text-lg font-bold shadow-lg shadow-blue-200"
             >
