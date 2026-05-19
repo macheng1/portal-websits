@@ -1,0 +1,7 @@
+interface:
+  display_name: "门户测试验证"
+  short_description: "验证门户页面和发布"
+  default_prompt: "使用 $portal-test-verification 验证这个门户网站改动。"
+
+policy:
+  allow_implicit_invocation: true

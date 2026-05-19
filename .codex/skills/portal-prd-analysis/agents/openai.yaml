@@ -1,0 +1,7 @@
+interface:
+  display_name: "门户 PRD 分析"
+  short_description: "拆解门户网站需求"
+  default_prompt: "使用 $portal-prd-analysis 从门户网站视角分析这个需求。"
+
+policy:
+  allow_implicit_invocation: true

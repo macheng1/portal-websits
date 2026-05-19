@@ -1,0 +1,7 @@
+interface:
+  display_name: "门户视觉 UI"
+  short_description: "门户页面视觉设计审核"
+  default_prompt: "使用 $portal-ui-design 根据 PRD 设计门户页面视觉方案。"
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,7 @@
+interface:
+  display_name: "门户 SEO 多语言"
+  short_description: "处理 SEO 和中英文内容"
+  default_prompt: "使用 $portal-seo-i18n 优化这个门户页面的 SEO 和多语言内容。"
+
+policy:
+  allow_implicit_invocation: true

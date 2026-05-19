@@ -1,0 +1,7 @@
+interface:
+  display_name: "门户功能开发"
+  short_description: "实现门户网站功能"
+  default_prompt: "使用 $portal-feature-development 实现这个门户网站功能。"
+
+policy:
+  allow_implicit_invocation: true

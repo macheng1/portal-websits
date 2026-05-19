@@ -1,0 +1,7 @@
+interface:
+  display_name: "门户 API 对接"
+  short_description: "门户接口和表单联调"
+  default_prompt: "使用 $portal-api-integration 设计或检查门户网站 API 对接。"
+
+policy:
+  allow_implicit_invocation: true

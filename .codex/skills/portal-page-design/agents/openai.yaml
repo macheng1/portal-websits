@@ -1,0 +1,7 @@
+interface:
+  display_name: "门户页面设计"
+  short_description: "设计官网页面和转化"
+  default_prompt: "使用 $portal-page-design 设计这个门户网站页面。"
+
+policy:
+  allow_implicit_invocation: true

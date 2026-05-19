@@ -1,0 +1,7 @@
+interface:
+  display_name: "门户架构治理"
+  short_description: "统一门户网站架构"
+  default_prompt: "使用 $portal-architecture-governance 统一或调整这个门户网站架构。"
+
+policy:
+  allow_implicit_invocation: true
