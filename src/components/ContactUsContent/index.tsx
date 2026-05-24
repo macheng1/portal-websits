@@ -3,7 +3,7 @@
 
 import React, { useRef, useState } from "react";
 import { useThrottleFn } from "ahooks";
-import { Form, Button, Toast, Notification } from "@douyinfe/semi-ui-19";
+import { Form, Button, Toast, Notification, Tag } from "@douyinfe/semi-ui-19";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import {
   IconPhone,
@@ -17,9 +17,14 @@ import { submitInquiry, uploadFiles } from "@/src/lib/portal-api";
 
 export const ContactUsContent = ({ data, domain }: any) => {
   const [loading, setLoading] = useState(false);
+  const [uploadLoading, setUploadLoading] = useState(false);
+  const [attachments, setAttachments] = useState<
+    Array<{ name: string; url: string }>
+  >([]);
   const [captchaToken, setCaptchaToken] = useState<string>("");
   const captchaRef = useRef<any>(null);
   const formApi = useRef<any>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   // 提交表单的原始逻辑
   const submitForm = async (values: any) => {
@@ -36,17 +41,9 @@ export const ContactUsContent = ({ data, domain }: any) => {
 
     setLoading(true);
     try {
-      // 准备附件
-      const attachments = Array.isArray(values.files)
-        ? values.files
-            .map((file: any) => file.url || file.response?.url)
-            .filter(Boolean)
-            .join(",")
-        : "";
-
       const submitValues = {
         ...values,
-        attachments,
+        attachments: attachments.map((file) => file.url).join(","),
         captchaToken, // 添加 hCaptcha token
       };
 
@@ -60,6 +57,7 @@ export const ContactUsContent = ({ data, domain }: any) => {
         if (formApi.current) {
           formApi.current.reset();
         }
+        setAttachments([]);
         setCaptchaToken("");
         captchaRef.current?.resetCaptcha();
       } else {
@@ -82,26 +80,43 @@ export const ContactUsContent = ({ data, domain }: any) => {
   // 使用节流 hook（1秒内只执行一次）
   const { run: onFormSubmit } = useThrottleFn(submitForm, { wait: 1000 });
 
-  // 1. 自定义上传逻辑
-  const handleCustomUpload = async ({
-    fileInstance,
-    onSuccess,
-    onError,
-  }: any) => {
-    try {
-      const response: any = await uploadFiles(fileInstance);
-      const fileUrl = response.data?.[0]?.url || response[0] || response.url;
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) return;
 
-      onSuccess({
-        ...fileInstance,
-        url: fileUrl,
-      });
-      Toast.success(`${fileInstance.name} 上传成功`);
+    const invalidFile = files.find((file) => file.size > 4 * 1024 * 1024);
+    if (invalidFile) {
+      Toast.error(`${invalidFile.name} 超过 4MB`);
+      event.target.value = "";
+      return;
+    }
+
+    setUploadLoading(true);
+    try {
+      const response: any = await uploadFiles(files);
+      const uploaded = response.data || response || [];
+      const nextFiles = (Array.isArray(uploaded) ? uploaded : [uploaded])
+        .map((item: any, index: number) => ({
+          name: item.name || files[index]?.name || `附件${index + 1}`,
+          url: item.url || item,
+        }))
+        .filter((item: any) => item.url);
+
+      setAttachments((prev) => [...prev, ...nextFiles]);
+      Toast.success("附件上传成功");
     } catch (error) {
       console.error("上传失败:", error);
-      onError();
-      Toast.error(`${fileInstance.name} 上传失败`);
+      Toast.error("附件上传失败");
+    } finally {
+      setUploadLoading(false);
+      event.target.value = "";
     }
+  };
+
+  const removeAttachment = (url: string) => {
+    setAttachments((prev) => prev.filter((file) => file.url !== url));
   };
 
   return (
@@ -192,17 +207,46 @@ export const ContactUsContent = ({ data, domain }: any) => {
               rows={4}
             />
 
-            <Form.Upload
-              action=""
-              field="files"
-              label="图纸附件 (最大 4MB)"
-              draggable={true}
-              dragIcon={<IconUpload size="extra-large" />}
-              customRequest={handleCustomUpload}
-              accept=".pdf,.jpg,.png,.dwg,.zip"
-              limit={4 * 1024}
-            />
-            <p className="text-xs text-slate-400 -mt-3 mb-4">
+            <div className="mb-4">
+              <div className="text-sm font-medium text-slate-700 mb-2">
+                图纸附件 (单个最大 4MB)
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                accept=".pdf,.jpg,.jpeg,.png,.dwg,.zip"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+              <button
+                type="button"
+                className="w-full min-h-28 rounded-2xl border border-dashed border-slate-200 bg-slate-50 hover:bg-slate-100 transition-colors flex flex-col items-center justify-center gap-2 text-slate-500"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploadLoading}
+              >
+                <IconUpload size="extra-large" />
+                <span className="font-medium">
+                  {uploadLoading ? "上传中..." : "点击上传附件"}
+                </span>
+              </button>
+              {attachments.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {attachments.map((file) => (
+                    <Tag
+                      key={file.url}
+                      color="blue"
+                      type="light"
+                      closable
+                      onClose={() => removeAttachment(file.url)}
+                    >
+                      {file.name}
+                    </Tag>
+                  ))}
+                </div>
+              )}
+            </div>
+            <p className="text-xs text-slate-400 -mt-2 mb-4">
               支持 PDF、JPG、PNG、DWG、ZIP 格式
             </p>
 

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
+    "@douyinfe/semi-icons": "^2.90.10",
     "@douyinfe/semi-ui-19": "^2.90.10",
     "@hcaptcha/react-hcaptcha": "^2.0.2",
     "ahooks": "^3.9.6",
