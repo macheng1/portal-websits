@@ -28,7 +28,7 @@ export default async function AboutUsPage({
   if (!data) return <div className="p-20 text-center">信息加载中...</div>;
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-[#f4f6f8] min-h-screen">
       <AboutUsContent data={data} />
     </div>
   );

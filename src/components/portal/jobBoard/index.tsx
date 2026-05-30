@@ -1,8 +1,7 @@
-// src/components/portal/JobBoard.tsx
-"use client"; // 💡 必须加上，解决 Semi UI 类组件报错
+"use client";
 
-import { Typography, Tag, Button } from "@douyinfe/semi-ui-19";
-import { IconSend } from "@douyinfe/semi-icons";
+import { Button, Tag } from "@douyinfe/semi-ui-19";
+import { IconArrowRight, IconSend } from "@douyinfe/semi-icons";
 import { formatJobPublishTime } from "@/src/lib/formatJobPublishTime";
 
 type JobBoardItem = {
@@ -10,39 +9,44 @@ type JobBoardItem = {
   position: string;
   count?: number;
   salary?: string | null;
+  location?: string | null;
   createdAt?: string | null;
 };
 
 export const JobBoard = ({ jobs = [] }: { jobs: JobBoardItem[] }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {jobs.map((job) => (
         <div
           key={job.id}
-          className="group bg-white/5 hover:bg-white/10 p-4 rounded-2xl border border-white/10 transition-all cursor-pointer"
+          className="group border border-slate-200 bg-white p-4 transition-colors hover:border-blue-500 hover:bg-slate-50"
         >
-          <div className="flex justify-between items-start mb-2">
-            <Typography.Text strong className="text-white text-base">
-              {job.position}
-            </Typography.Text>
-            <div className="flex items-center gap-2">
-              {formatJobPublishTime(job.createdAt) && (
-                <span className="text-[11px] font-bold text-blue-200">
-                  {formatJobPublishTime(job.createdAt)}
-                </span>
-              )}
-              <Tag color="white" type="light" size="small">
-                招 {job.count} 人
-              </Tag>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-base font-black text-slate-950">
+                  {job.position}
+                </h3>
+                {formatJobPublishTime(job.createdAt) && (
+                  <span className="text-xs font-bold text-slate-500">
+                    {formatJobPublishTime(job.createdAt)}
+                  </span>
+                )}
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                <span>{job.location || "工作地点面议"}</span>
+                <span>/</span>
+                <span>招 {job.count || 1} 人</span>
+              </div>
             </div>
+            <Tag color="blue" type="light" size="small">
+              {job.salary || "面议"}
+            </Tag>
           </div>
-          <div className="flex justify-between items-center text-xs">
-            <span className="text-white/60">
-              月薪：
-              <span className="text-blue-400 font-bold">{job.salary}</span>
-            </span>
-            <span className="text-white/40 group-hover:text-white transition-colors">
-              立即沟通 →
+          <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-sm">
+            <span className="text-slate-500">制造团队岗位</span>
+            <span className="inline-flex items-center gap-1 font-bold text-blue-700">
+              了解职位 <IconArrowRight />
             </span>
           </div>
         </div>
@@ -53,10 +57,10 @@ export const JobBoard = ({ jobs = [] }: { jobs: JobBoardItem[] }) => {
         size="large"
         icon={<IconSend />}
         style={{
-          backgroundColor: "white",
-          color: "#0f172a",
+          backgroundColor: "#0f172a",
+          color: "white",
           fontWeight: "bold",
-          borderRadius: "12px",
+          borderRadius: 0,
           marginTop: "12px",
         }}
       >

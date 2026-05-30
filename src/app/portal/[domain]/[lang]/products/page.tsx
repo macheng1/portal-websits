@@ -17,7 +17,7 @@ export default async function ProductCenterPage({
   if (!data) return <div className="p-20 text-center">未找到工厂信息</div>;
 
   return (
-    <div className="bg-slate-50 min-h-screen">
+    <div className="bg-[#f4f6f8] min-h-screen">
       {/* 渲染客户端交互布局 */}
       <ProductClientLayout
         categories={data.products}

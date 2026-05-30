@@ -1,128 +1,144 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// src/components/portal/AboutUsContent.tsx
 "use client";
 
 import {
-  Typography,
-  Timeline,
-  Card,
-  Space,
-  Divider,
-} from "@douyinfe/semi-ui-19";
-import {
-  IconVerify,
+  IconCustomerSupport,
   IconIdentity,
   IconSetting,
-  IconCustomerSupport,
+  IconVerify,
 } from "@douyinfe/semi-icons";
-import Image from "next/image";
 
 export const AboutUsContent = ({ data }: any) => {
   const advantages = [
     {
-      icon: <IconSetting style={{ color: "#2563eb" }} />,
-      title: "先进设备",
-      desc: "拥有多台精密数控车床及全自动冷拔机组。",
+      icon: <IconSetting />,
+      title: "生产装备",
+      desc: "围绕批量制造与稳定交付配置加工设备，覆盖常规规格与非标需求。",
     },
     {
-      icon: <IconVerify style={{ color: "#2563eb" }} />,
-      title: "严格质检",
-      desc: "每批产品均经过光谱分析及硬度测试。",
+      icon: <IconVerify />,
+      title: "质量控制",
+      desc: "从材料、尺寸到出厂检验，按订单要求进行过程管控。",
     },
     {
-      icon: <IconIdentity style={{ color: "#2563eb" }} />,
-      title: "专业团队",
-      desc: "深耕不锈钢行业 20 余年的技术专家指导。",
+      icon: <IconIdentity />,
+      title: "制造团队",
+      desc: "由熟悉产品工艺、现场管理和客户交付的人员协同推进。",
     },
     {
-      icon: <IconCustomerSupport style={{ color: "#2563eb" }} />,
-      title: "极速响应",
-      desc: "提供 24 小时技术咨询及非标定制服务。",
+      icon: <IconCustomerSupport />,
+      title: "响应服务",
+      desc: "支持图纸沟通、规格确认、样品打样和批量报价。",
     },
   ];
 
+  const profileItems = [
+    { label: "成立时间", value: data.businessInfo?.foundDate || "-" },
+    { label: "员工规模", value: data.businessInfo?.staffCount || "-" },
+    { label: "年产能", value: data.businessInfo?.annualCapacity || "-" },
+    { label: "主营产品", value: data.businessInfo?.mainProducts || "-" },
+  ];
+
   return (
-    <main>
-      {/* 1. 品牌愿景区 - 纯白大背景 */}
-      <section className="py-20 px-6 max-w-7xl mx-auto text-center">
-        <Typography.Title
-          heading={1}
-          className="text-4xl md:text-6xl font-black mb-8"
-        >
-          {data.name}
-        </Typography.Title>
-        <p className="text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed italic">
-          "{data.slogan || "赋能制造律动，链接工业未来"}"
-        </p>
-      </section>
-
-      {/* 2. 工厂简介 - 图文交叉布局 */}
-      <section className="py-16 px-6 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-        <div className="space-y-6">
-          <div className="border-l-4 border-blue-600 pl-6">
-            <h2 className="text-3xl font-bold">工厂概况</h2>
-            <p className="text-slate-400">Factory Overview</p>
-          </div>
-          <Typography.Paragraph className="text-lg text-slate-600 leading-loose">
-            {data.intro}
-            <br />
-            <br />
-            坐落于享有“中国不锈钢名镇”美誉的江苏省兴化市戴南镇，我们依托完善的产业链优势，致力于为全球加热管制造商提供最精准的零部件支持。
-          </Typography.Paragraph>
-        </div>
-        <div className="relative h-80 w-full rounded-3xl overflow-hidden shadow-2xl border border-slate-100">
-          <Image
-            src="/images/factory-gate.jpg"
-            alt="工厂实拍"
-            fill
-            className="object-cover"
-          />
+    <main className="bg-[#f4f6f8]">
+      <section className="bg-slate-950 text-white">
+        <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
+          <p className="text-xs font-black tracking-[0.28em] text-blue-300">
+            ABOUT FACTORY
+          </p>
+          <h1 className="mt-4 text-4xl md:text-5xl font-black">
+            {data.name}
+          </h1>
+          <p className="mt-5 max-w-3xl text-lg leading-8 text-white/68">
+            {data.slogan || "专注工业产品制造，服务稳定供应链。"}
+          </p>
         </div>
       </section>
 
-      {/* 3. 核心优势 - 四宫格展示 */}
-      <section className="bg-slate-50 py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-2">为什么选择我们</h2>
-            <div className="h-1 w-20 bg-blue-600 mx-auto"></div>
+      <section className="max-w-7xl mx-auto px-6 py-12">
+        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="border border-slate-200 bg-white p-6 md:p-8">
+            <p className="text-xs font-black tracking-[0.22em] text-blue-700">
+              FACTORY PROFILE
+            </p>
+            <h2 className="mt-3 text-3xl font-black text-slate-950">
+              工厂概况
+            </h2>
+            <p className="mt-6 text-base leading-9 text-slate-600">
+              {data.intro}
+            </p>
+            <p className="mt-5 text-base leading-9 text-slate-600">
+              我们围绕产品质量、交付稳定性和客户沟通效率持续建设制造能力，为采购、研发和生产客户提供可靠配套。
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {advantages.map((adv, idx) => (
-              <Card
-                key={idx}
-                className="bg-white border-none rounded-2xl hover:shadow-xl transition-all hover:-translate-y-2 p-4"
-              >
-                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-6">
-                  {adv.icon}
+
+          <div className="grid grid-cols-2 border border-slate-200 bg-white">
+            {profileItems.map((item) => (
+              <div key={item.label} className="border-r border-b p-5 last:border-r-0">
+                <div className="text-xs font-bold text-slate-500">
+                  {item.label}
                 </div>
-                <h3 className="font-bold text-lg mb-3">{adv.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">
-                  {adv.desc}
-                </p>
-              </Card>
+                <div className="mt-2 text-xl font-black text-slate-950 break-words">
+                  {item.value}
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. 发展历程 - 时间轴 */}
-      <section className="py-20 px-6 max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-16">发展历程</h2>
-        <Timeline mode="alternate">
-          <Timeline.Item time="2015" type="success">
-            元思科技在江苏戴南成立，开启不锈钢引出棒业务。
-          </Timeline.Item>
-          <Timeline.Item time="2018">
-            扩建 5000 平方米现代化生产车间，引入全自动数控设备。
-          </Timeline.Item>
-          <Timeline.Item time="2022">
-            通过 ISO9001 质量管理体系认证，业务覆盖全国 20 多个省份。
-          </Timeline.Item>
-          <Timeline.Item time="2026" type="warning">
-            启动数字化工厂转型，为客户提供更透明的生产追溯。
-          </Timeline.Item>
-        </Timeline>
+      <section className="max-w-7xl mx-auto px-6 pb-12">
+        <div className="mb-6">
+          <p className="text-xs font-black tracking-[0.22em] text-blue-700">
+            CAPABILITY
+          </p>
+          <h2 className="mt-3 text-3xl font-black text-slate-950">
+            制造与服务能力
+          </h2>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {advantages.map((adv) => (
+            <div
+              key={adv.title}
+              className="border border-slate-200 bg-white p-6 transition-colors hover:border-blue-500"
+            >
+              <div className="flex h-11 w-11 items-center justify-center bg-blue-50 text-blue-700">
+                {adv.icon}
+              </div>
+              <h3 className="mt-5 text-lg font-black text-slate-950">
+                {adv.title}
+              </h3>
+              <p className="mt-3 text-sm leading-7 text-slate-500">
+                {adv.desc}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 pb-16">
+        <div className="border border-slate-200 bg-white p-6 md:p-8">
+          <p className="text-xs font-black tracking-[0.22em] text-blue-700">
+            PROCESS
+          </p>
+          <h2 className="mt-3 text-3xl font-black text-slate-950">
+            合作流程
+          </h2>
+          <div className="mt-8 grid gap-4 md:grid-cols-4">
+            {["需求沟通", "图纸确认", "样品/报价", "批量交付"].map(
+              (item, index) => (
+                <div key={item} className="border border-slate-100 p-5">
+                  <div className="font-mono text-sm font-black text-blue-700">
+                    0{index + 1}
+                  </div>
+                  <div className="mt-3 text-lg font-black text-slate-950">
+                    {item}
+                  </div>
+                </div>
+              ),
+            )}
+          </div>
+        </div>
       </section>
     </main>
   );

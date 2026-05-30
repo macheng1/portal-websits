@@ -120,168 +120,194 @@ export const ContactUsContent = ({ data, domain }: any) => {
   };
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-16 md:py-24">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-        {/* --- 左侧：信息展示 (完全保留你的原样式) --- */}
-        <div className="space-y-12">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-black text-slate-900 mb-6 tracking-tight">
-              欢迎联系 <span className="text-blue-600">我们</span>
-            </h1>
-            <p className="text-lg text-slate-500 max-w-lg leading-relaxed">
-              您的每一个需求对我们都至关重要。请填写右侧表单，我们的技术经理将为您提供一对一的咨询服务。
-            </p>
-          </div>
+    <main className="bg-[#f4f6f8]">
+      <section className="bg-slate-950 text-white">
+        <div className="max-w-7xl mx-auto px-6 py-16 md:py-20">
+          <p className="text-xs font-black tracking-[0.28em] text-blue-300">
+            CONTACT FACTORY
+          </p>
+          <h1 className="mt-4 text-4xl md:text-5xl font-black">
+            联系我们
+          </h1>
+          <p className="mt-5 max-w-2xl leading-8 text-white/65">
+            提交产品需求、图纸附件或采购计划，我们会根据规格和应用场景尽快反馈。
+          </p>
+        </div>
+      </section>
 
-          <div className="space-y-8">
-            <div className="flex gap-5">
-              <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                <IconMapPin className="text-blue-600" size="large" />
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900 mb-1 text-lg">
-                  办公地址
-                </h3>
-                <p className="text-slate-500 leading-relaxed">{data.address}</p>
+      <section className="max-w-7xl mx-auto px-6 py-12 md:py-14">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-8">
+          <div className="space-y-6">
+            <div className="border border-slate-200 bg-white p-6 md:p-8">
+              <p className="text-xs font-black tracking-[0.22em] text-blue-700">
+                FACTORY INFO
+              </p>
+              <h2 className="mt-3 text-3xl font-black text-slate-950">
+                工厂联系方式
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-500">
+                如有图纸、样品或批量采购需求，可以通过电话或表单直接联系。
+              </p>
+
+              <div className="mt-8 space-y-6">
+                <div className="flex gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-blue-50 text-blue-700">
+                    <IconMapPin size="large" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-slate-950">
+                      工厂地址
+                    </h3>
+                    <p className="mt-1 leading-7 text-slate-500">
+                      {data.address}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-blue-50 text-blue-700">
+                    <IconPhone size="large" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-slate-950">
+                      咨询热线
+                    </h3>
+                    <p className="mt-1 font-mono text-xl font-black text-slate-950">
+                      {data.phone}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="flex gap-5">
-              <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center shrink-0">
-                <IconPhone className="text-green-600" size="large" />
+            <div className="relative aspect-video w-full overflow-hidden border border-slate-200 bg-slate-100">
+              <AmapSection address={data.address} />
+            </div>
+          </div>
+
+          <div className="border border-slate-200 bg-white p-6 md:p-8">
+            <div className="mb-8 flex items-center gap-3 border-b border-slate-100 pb-5">
+              <div className="flex h-10 w-10 items-center justify-center bg-blue-600">
+                <IconMail style={{ color: "white" }} />
               </div>
               <div>
-                <h3 className="font-bold text-slate-900 mb-1 text-lg">
-                  全国服务热线
-                </h3>
-                <p className="text-slate-500 font-mono text-xl font-bold">
-                  {data.phone}
+                <h2 className="text-2xl font-black text-slate-950">
+                  在线询价
+                </h2>
+                <p className="mt-1 text-sm text-slate-500">
+                  支持上传图纸与附件
                 </p>
               </div>
             </div>
-          </div>
 
-          <div className="relative aspect-video w-full rounded-3xl bg-slate-100 overflow-hidden border border-slate-200">
-            <AmapSection address={data.address} />
-          </div>
-        </div>
-
-        {/* --- 右侧：询价表单 (完全保留你的原样式) --- */}
-        <div className="bg-white rounded-[2.5rem] p-8 md:p-12 border border-slate-100 shadow-2xl shadow-blue-900/5">
-          <div className="flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <IconMail style={{ color: "white" }} />
-            </div>
-            <h2 className="text-2xl font-bold text-slate-900">智能询价系统</h2>
-          </div>
-
-          <Form
-            layout="vertical"
-            onSubmit={onFormSubmit}
-            getFormApi={(api) => {
-              formApi.current = api; // 💡 确保引用正确挂载
-            }}
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <Form.Input
-                field="name"
-                label="您的姓名"
-                placeholder="请输入姓名"
-                size="large"
-                rules={[{ required: true, message: "该项为必填" }]}
-              />
-              <Form.Input
-                field="phone"
-                label="联系方式"
-                placeholder="手机号或邮箱"
-                size="large"
-                rules={[{ required: true, message: "该项为必填" }]}
-              />
-            </div>
-
-            <Form.TextArea
-              field="message"
-              label="需求详情"
-              placeholder="请描述您的具体需求或技术指标..."
-              rules={[{ required: true, message: "该项为必填" }]}
-              rows={4}
-            />
-
-            <div className="mb-4">
-              <div className="text-sm font-medium text-slate-700 mb-2">
-                图纸附件 (单个最大 4MB)
-              </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                multiple
-                accept=".pdf,.jpg,.jpeg,.png,.dwg,.zip"
-                className="hidden"
-                onChange={handleFileChange}
-              />
-              <button
-                type="button"
-                className="w-full min-h-28 rounded-2xl border border-dashed border-slate-200 bg-slate-50 hover:bg-slate-100 transition-colors flex flex-col items-center justify-center gap-2 text-slate-500"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploadLoading}
-              >
-                <IconUpload size="extra-large" />
-                <span className="font-medium">
-                  {uploadLoading ? "上传中..." : "点击上传附件"}
-                </span>
-              </button>
-              {attachments.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-3">
-                  {attachments.map((file) => (
-                    <Tag
-                      key={file.url}
-                      color="blue"
-                      type="light"
-                      closable
-                      onClose={() => removeAttachment(file.url)}
-                    >
-                      {file.name}
-                    </Tag>
-                  ))}
-                </div>
-              )}
-            </div>
-            <p className="text-xs text-slate-400 -mt-2 mb-4">
-              支持 PDF、JPG、PNG、DWG、ZIP 格式
-            </p>
-
-            {/* hCaptcha 验证 */}
-            <div className="py-2">
-              <HCaptcha
-                sitekey={
-                  process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "test-key"
-                }
-                onVerify={(token) => setCaptchaToken(token)}
-                ref={captchaRef}
-                languageOverride="zh-CN"
-              />
-            </div>
-
-            <Button
-              htmlType="submit"
-              type="primary"
-              theme="solid"
-              block
-              size="large"
-              loading={loading}
-              disabled={loading}
-              icon={<IconSend />}
-              className="mt-8 h-16 rounded-2xl text-lg font-bold shadow-lg shadow-blue-200"
+            <Form
+              layout="vertical"
+              onSubmit={onFormSubmit}
+              getFormApi={(api) => {
+                formApi.current = api;
+              }}
             >
-              立即提交询价
-            </Button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <Form.Input
+                  field="name"
+                  label="您的姓名"
+                  placeholder="请输入姓名"
+                  size="large"
+                  rules={[{ required: true, message: "该项为必填" }]}
+                />
+                <Form.Input
+                  field="phone"
+                  label="联系方式"
+                  placeholder="手机号或邮箱"
+                  size="large"
+                  rules={[{ required: true, message: "该项为必填" }]}
+                />
+              </div>
 
-            <p className="mt-4 text-center text-xs text-slate-400">
-              * 我们承诺保护您的隐私，信息仅用于业务咨询
-            </p>
-          </Form>
+              <Form.TextArea
+                field="message"
+                label="需求详情"
+                placeholder="请描述产品名称、规格、材质、数量或技术指标..."
+                rules={[{ required: true, message: "该项为必填" }]}
+                rows={4}
+              />
+
+              <div className="mb-4">
+                <div className="mb-2 text-sm font-bold text-slate-700">
+                  图纸附件 (单个最大 4MB)
+                </div>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept=".pdf,.jpg,.jpeg,.png,.dwg,.zip"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+                <button
+                  type="button"
+                  className="flex min-h-28 w-full flex-col items-center justify-center gap-2 border border-dashed border-slate-300 bg-slate-50 text-slate-500 transition-colors hover:bg-slate-100"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploadLoading}
+                >
+                  <IconUpload size="extra-large" />
+                  <span className="font-bold">
+                    {uploadLoading ? "上传中..." : "点击上传附件"}
+                  </span>
+                </button>
+                {attachments.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {attachments.map((file) => (
+                      <Tag
+                        key={file.url}
+                        color="blue"
+                        type="light"
+                        closable
+                        onClose={() => removeAttachment(file.url)}
+                      >
+                        {file.name}
+                      </Tag>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <p className="-mt-2 mb-4 text-xs text-slate-400">
+                支持 PDF、JPG、PNG、DWG、ZIP 格式
+              </p>
+
+              <div className="py-2">
+                <HCaptcha
+                  sitekey={
+                    process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "test-key"
+                  }
+                  onVerify={(token) => setCaptchaToken(token)}
+                  ref={captchaRef}
+                  languageOverride="zh-CN"
+                />
+              </div>
+
+              <Button
+                htmlType="submit"
+                type="primary"
+                theme="solid"
+                block
+                size="large"
+                loading={loading}
+                disabled={loading}
+                icon={<IconSend />}
+                className="mt-8 h-14 text-lg font-bold"
+                style={{ borderRadius: 0 }}
+              >
+                立即提交询价
+              </Button>
+
+              <p className="mt-4 text-center text-xs text-slate-400">
+                * 我们承诺保护您的隐私，信息仅用于业务咨询
+              </p>
+            </Form>
+          </div>
         </div>
-      </div>
+      </section>
     </main>
   );
 };

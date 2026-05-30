@@ -30,7 +30,7 @@ export const NavBar: FC<INavBarProps> = ({
   const params = useParams();
   const domain = (params.domain as string) || "wuxi-yuansi";
   const lang = (params.lang as string) || "zh";
-  const isEn = pathname.includes("/en");
+  const isEn = lang === "en";
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(event.target as Node)) {
@@ -68,8 +68,8 @@ export const NavBar: FC<INavBarProps> = ({
     },
   ];
   return (
-    <nav className="sticky top-0 z-50 w-full bg-white border-b border-slate-100 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 h-[68px] flex items-center justify-between">
         {/* 1. Logo 区域 */}
         <Link
           href={logoHref}
@@ -83,18 +83,18 @@ export const NavBar: FC<INavBarProps> = ({
               className="h-8 w-auto max-w-[120px] object-contain"
             />
           )}
-          <span className="ml-3 font-bold text-slate-900 text-sm md:text-base tracking-tight truncate max-w-[120px]">
+          <span className="ml-3 font-black text-slate-950 text-sm md:text-base tracking-tight truncate max-w-[150px]">
             {title}
           </span>
         </Link>
 
         {/* 2. 桌面端菜单 */}
-        <div className="hidden md:flex flex-1 items-center ml-10 gap-x-8">
+        <div className="hidden md:flex flex-1 items-center ml-10 gap-x-1">
           {desktopMenuItems.map((item, index) => (
             <Link
               key={index}
               href={item.href}
-              className="text-slate-600 hover:text-blue-600 font-medium no-underline text-[14px] transition-colors relative hover:after:w-full after:transition-all"
+              className="px-4 py-2 text-slate-700 hover:bg-slate-100 hover:text-blue-700 font-bold no-underline text-[14px] transition-colors"
             >
               {item.label}
             </Link>
@@ -107,7 +107,7 @@ export const NavBar: FC<INavBarProps> = ({
           <div className="hidden md:block relative" ref={langRef}>
             <button
               onClick={() => setIsLangOpen(!isLangOpen)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors text-slate-600 text-sm font-medium border border-transparent hover:border-slate-100"
+              className="flex items-center gap-1 border border-slate-200 px-3 py-1.5 hover:bg-slate-50 transition-colors text-slate-600 text-sm font-bold"
             >
               <IconLanguage size="large" className="text-slate-400" />
               <span>{isEn ? "EN" : "ZH"}</span>
@@ -121,7 +121,7 @@ export const NavBar: FC<INavBarProps> = ({
 
             {/* 下拉菜单浮层 */}
             {isLangOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-white border border-slate-100 rounded-xl shadow-xl z-50 py-1 overflow-hidden animate-in fade-in zoom-in duration-200">
+              <div className="absolute right-0 mt-2 w-32 bg-white border border-slate-200 shadow-xl z-50 py-1 overflow-hidden animate-in fade-in zoom-in duration-200">
                 <button
                   onClick={() => handleLanguageChange("zh")}
                   className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
@@ -190,7 +190,7 @@ export const NavBar: FC<INavBarProps> = ({
                   key={index}
                   href={item.href}
                   onClick={() => setVisible(false)}
-                  className="px-4 py-3 text-slate-700 font-medium no-underline hover:bg-slate-50 hover:text-blue-600 rounded-lg transition-all"
+                  className="px-4 py-3 text-slate-700 font-bold no-underline hover:bg-slate-50 hover:text-blue-600 transition-all"
                 >
                   {item.label}
                 </Link>
