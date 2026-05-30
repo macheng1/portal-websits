@@ -17,9 +17,6 @@ importers:
       '@douyinfe/semi-ui-19':
         specifier: ^2.90.10
         version: 2.97.0(@floating-ui/dom@1.7.6)(@tiptap/suggestion@3.23.4(@tiptap/core@3.23.4(@tiptap/pm@3.23.4))(@tiptap/pm@3.23.4))(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@hcaptcha/react-hcaptcha':
-        specifier: ^2.0.2
-        version: 2.0.2
       ahooks:
         specifier: ^3.9.6
         version: 3.9.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -258,9 +255,6 @@ packages:
 
   '@floating-ui/utils@0.2.11':
     resolution: {integrity: sha512-RiB/yIh78pcIxl6lLMG0CgBXAZ2Y0eVHqMPYugu+9U0AeT6YBeiJpf7lbdJNIugFP5SIjwNRgo4DhR1Qxi26Gg==}
-
-  '@hcaptcha/react-hcaptcha@2.0.2':
-    resolution: {integrity: sha512-VbuH6VJ6m3BHmVBHs0fL9t+suZd7PQEqCzqL2BiUbBvbHI3XfvSgdiug2QiEPN8zskbPTIV/FfGPF53JCckrow==}
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -3094,8 +3088,6 @@ snapshots:
 
   '@floating-ui/utils@0.2.11':
     optional: true
-
-  '@hcaptcha/react-hcaptcha@2.0.2': {}
 
   '@humanfs/core@0.19.2':
     dependencies:

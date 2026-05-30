@@ -1,6 +1,58 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
 
+const RATE_LIMIT_WINDOW = 60 * 1000;
+const RATE_LIMIT_MAX = 10;
+const MIN_SUBMIT_SECONDS = 3;
+const DUPLICATE_WINDOW = 10 * 60 * 1000;
+
+const rateLimitStore = new Map<string, number[]>();
+const recentSubmissionStore = new Map<string, number>();
+
+function normalizeText(value: unknown) {
+  return String(value || "").trim().replace(/\s+/g, " ");
+}
+
+function getRateLimitKey(ip: string, domain: string, userAgent: string) {
+  return `${domain}:${ip}:${userAgent.slice(0, 80)}`;
+}
+
+function isRateLimited(key: string, now: number) {
+  const recent = (rateLimitStore.get(key) || []).filter(
+    (time) => now - time < RATE_LIMIT_WINDOW,
+  );
+  if (recent.length >= RATE_LIMIT_MAX) {
+    rateLimitStore.set(key, recent);
+    return true;
+  }
+  rateLimitStore.set(key, [...recent, now]);
+  return false;
+}
+
+function getDuplicateKey(
+  ip: string,
+  domain: string,
+  body: Record<string, unknown>,
+) {
+  return [
+    domain,
+    ip,
+    normalizeText(body.phone).toLowerCase(),
+    normalizeText(body.message).toLowerCase(),
+  ].join(":");
+}
+
+function isDuplicateSubmission(key: string, now: number) {
+  const lastSubmitAt = recentSubmissionStore.get(key);
+  if (lastSubmitAt && now - lastSubmitAt < DUPLICATE_WINDOW) return true;
+
+  recentSubmissionStore.set(key, now);
+  for (const [storeKey, time] of recentSubmissionStore.entries()) {
+    if (now - time > DUPLICATE_WINDOW) recentSubmissionStore.delete(storeKey);
+  }
+  return false;
+}
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ domain: string }> }
@@ -11,63 +63,51 @@ export async function POST(
     const clientIP = headersList.get("x-forwarded-for")?.split(",")[0] ||
                      headersList.get("x-real-ip") ||
                      "unknown";
+    const userAgent = headersList.get("user-agent") || "";
 
     const { domain } = await params;
+    const now = Date.now();
     const body = await request.json();
 
-    console.log("收到请求体:", {
-      hasCaptchaToken: !!body.captchaToken,
-    });
-
-    // 验证 hCaptcha token
-    if (!body.captchaToken) {
-      return NextResponse.json(
-        { error: "请完成人机验证" },
-        { status: 400 }
-      );
+    if (isRateLimited(getRateLimitKey(clientIP, domain, userAgent), now)) {
+      return NextResponse.json({ error: "提交过于频繁，请稍后再试" }, { status: 429 });
     }
 
-    // 向 hCaptcha 服务器验证 token
-    const secretKey = process.env.HCAPTCHA_SECRET_KEY;
-    if (!secretKey) {
-      return NextResponse.json(
-        { error: "服务器配置错误" },
-        { status: 500 }
-      );
+    if (normalizeText(body.website)) {
+      return NextResponse.json({ error: "提交失败，请稍后重试" }, { status: 400 });
     }
 
-    const verifyResponse = await fetch("https://api.hcaptcha.com/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        secret: secretKey,
-        response: body.captchaToken,
-        remoteip: clientIP,
-      }),
-    });
-
-    const verifyResult = await verifyResponse.json();
-    if (!verifyResult.success) {
-      return NextResponse.json(
-        { error: "验证码验证失败" },
-        { status: 400 }
-      );
+    const formStartedAt = Number(body.formStartedAt || 0);
+    if (!formStartedAt || now - formStartedAt < MIN_SUBMIT_SECONDS * 1000) {
+      return NextResponse.json({ error: "提交过快，请稍后再试" }, { status: 400 });
     }
 
-    // 基础验证
-    if (!body.email || !body.message) {
+    // 基础验证，字段需要和前台询价表单及后端 CreateInquiryDto 对齐。
+    if (!body.name || !body.phone || !body.message) {
       return NextResponse.json(
         { error: "缺少必填字段" },
         { status: 400 }
       );
     }
 
-    // 邮箱格式简单验证
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(body.email)) {
+    if (String(body.name).length > 20) {
       return NextResponse.json(
-        { error: "邮箱格式不正确" },
+        { error: "姓名不能超过20字" },
         { status: 400 }
+      );
+    }
+
+    if (String(body.message).length > 500) {
+      return NextResponse.json(
+        { error: "内容不能超过500字" },
+        { status: 400 }
+      );
+    }
+
+    if (isDuplicateSubmission(getDuplicateKey(clientIP, domain, body), now)) {
+      return NextResponse.json(
+        { error: "请勿重复提交相同需求" },
+        { status: 409 }
       );
     }
 
@@ -80,14 +120,17 @@ export async function POST(
       );
     }
 
+    const submitBody = { ...body };
+    delete submitBody.website;
+    delete submitBody.formStartedAt;
     const response = await fetch(`${apiUrl}/portal/${domain}/inquiry`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "X-Forwarded-For": clientIP,
-        "User-Agent": headersList.get("user-agent") || "",
+        "User-Agent": userAgent,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(submitBody),
     });
 
     if (!response.ok) {

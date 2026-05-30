@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useThrottleFn } from "ahooks";
 import { Form, Button, Toast, Notification, Tag } from "@douyinfe/semi-ui-19";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 import {
   IconPhone,
   IconMail,
@@ -21,10 +20,13 @@ export const ContactUsContent = ({ data, domain }: any) => {
   const [attachments, setAttachments] = useState<
     Array<{ name: string; url: string }>
   >([]);
-  const [captchaToken, setCaptchaToken] = useState<string>("");
-  const captchaRef = useRef<any>(null);
+  const formStartedAtRef = useRef(0);
   const formApi = useRef<any>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    formStartedAtRef.current = Date.now();
+  }, []);
 
   // 提交表单的原始逻辑
   const submitForm = async (values: any) => {
@@ -33,18 +35,12 @@ export const ContactUsContent = ({ data, domain }: any) => {
       return;
     }
 
-    // 验证 hCaptcha
-    if (!captchaToken) {
-      Toast.error("请完成人机验证");
-      return;
-    }
-
     setLoading(true);
     try {
       const submitValues = {
         ...values,
         attachments: attachments.map((file) => file.url).join(","),
-        captchaToken, // 添加 hCaptcha token
+        formStartedAt: formStartedAtRef.current,
       };
 
       // 提交表单到后端
@@ -58,8 +54,7 @@ export const ContactUsContent = ({ data, domain }: any) => {
           formApi.current.reset();
         }
         setAttachments([]);
-        setCaptchaToken("");
-        captchaRef.current?.resetCaptcha();
+        formStartedAtRef.current = Date.now();
       } else {
         const errorResult = await response.json().catch(() => ({}));
         throw new Error(
@@ -275,16 +270,17 @@ export const ContactUsContent = ({ data, domain }: any) => {
                 支持 PDF、JPG、PNG、DWG、ZIP 格式
               </p>
 
-              <div className="py-2">
-                <HCaptcha
-                  sitekey={
-                    process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "test-key"
-                  }
-                  onVerify={(token) => setCaptchaToken(token)}
-                  ref={captchaRef}
-                  languageOverride="zh-CN"
-                />
-              </div>
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+                onChange={(event) => {
+                  formApi.current?.setValue("website", event.target.value);
+                }}
+              />
 
               <Button
                 htmlType="submit"

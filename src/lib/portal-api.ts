@@ -44,7 +44,7 @@ export const fetchTenantData = cache(async (domain: string): Promise<any> => {
 
     // 💡 核心优化：将后端配置转换为前端组件需要的格式
     return data;
-  } catch (error) {
+  } catch {
     // 生产环境建议使用 Sentry 等错误追踪服务
     console.error("Failed to fetch tenant data");
   }
@@ -95,10 +95,10 @@ export const fetchProductById = cache(
   },
 );
 /**
- * 提交询价表单（直接调用后端API）
+ * 提交询价表单（先走 Next API 完成人机校验，再转发后端）
  */
 export const submitInquiry = async (domain: string, values: any) => {
-  return await request(`${API_BASE}/portal/${domain}/inquiry`, {
+  return await request(`/api/portal/${domain}/inquiry`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(values),
