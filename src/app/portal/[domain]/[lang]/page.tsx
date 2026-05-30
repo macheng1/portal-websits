@@ -4,6 +4,7 @@ import { Metadata } from "next";
 
 import { IconPhone, IconUser } from "@douyinfe/semi-icons";
 import { ProductGrid } from "@/src/components/portal/productGrid";
+import { JobBoard } from "@/src/components/portal/jobBoard";
 import { SectionHeader } from "@/src/components/portal/sectionHeader";
 import { fetchTenantData } from "@/src/lib/portal-api";
 
@@ -186,6 +187,31 @@ export default async function PortalHome({
           </aside>
         </div>
       </div>
+
+      {data.jobs?.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 mt-12">
+          <div className="bg-slate-950 rounded-3xl p-6 md:p-10 shadow-sm">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8">
+              <div>
+                <p className="text-blue-300 text-sm font-bold mb-2">JOIN US</p>
+                <h2 className="text-2xl md:text-3xl font-black text-white">
+                  招聘职位
+                </h2>
+                <p className="text-white/60 mt-2">
+                  与我们一起打造更可靠的工业产品与服务。
+                </p>
+              </div>
+              <a
+                href={`/portal/${domain}/${lang}/jobs`}
+                className="text-blue-200 hover:text-white font-bold no-underline"
+              >
+                查看全部 →
+              </a>
+            </div>
+            <JobBoard jobs={data.jobs.slice(0, 3)} />
+          </div>
+        </section>
+      )}
     </div>
   );
 }

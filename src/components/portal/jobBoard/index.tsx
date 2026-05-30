@@ -3,8 +3,17 @@
 
 import { Typography, Tag, Button } from "@douyinfe/semi-ui-19";
 import { IconSend } from "@douyinfe/semi-icons";
+import { formatJobPublishTime } from "@/src/lib/formatJobPublishTime";
 
-export const JobBoard = ({ jobs = [] }: { jobs: any[] }) => {
+type JobBoardItem = {
+  id: string;
+  position: string;
+  count?: number;
+  salary?: string | null;
+  createdAt?: string | null;
+};
+
+export const JobBoard = ({ jobs = [] }: { jobs: JobBoardItem[] }) => {
   return (
     <div className="space-y-4">
       {jobs.map((job) => (
@@ -16,9 +25,16 @@ export const JobBoard = ({ jobs = [] }: { jobs: any[] }) => {
             <Typography.Text strong className="text-white text-base">
               {job.position}
             </Typography.Text>
-            <Tag color="white" type="light" size="small">
-              招 {job.count} 人
-            </Tag>
+            <div className="flex items-center gap-2">
+              {formatJobPublishTime(job.createdAt) && (
+                <span className="text-[11px] font-bold text-blue-200">
+                  {formatJobPublishTime(job.createdAt)}
+                </span>
+              )}
+              <Tag color="white" type="light" size="small">
+                招 {job.count} 人
+              </Tag>
+            </div>
           </div>
           <div className="flex justify-between items-center text-xs">
             <span className="text-white/60">
