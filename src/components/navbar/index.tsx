@@ -3,9 +3,7 @@ import { FC, useState, useEffect, useRef } from "react";
 import { Button, SideSheet } from "@douyinfe/semi-ui-19";
 import { IconMenu, IconLanguage, IconChevronDown } from "@douyinfe/semi-icons";
 import Link from "next/link";
-import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import logoLight from "@/public/logo_light.png";
 import { Dictionary } from "@/src/dictionaries"; // 💡 导入类型定义
 
 export interface INavBarProps {
@@ -13,19 +11,19 @@ export interface INavBarProps {
   logoHref?: string;
   showLogin?: boolean;
   title?: string;
+  logo?: string;
   dict: Dictionary["nav"]; // 💡 传入完整的字典对象
 }
 
 export const NavBar: FC<INavBarProps> = ({
   menuItems = [],
   logoHref = "/",
-  showLogin = false,
   title,
+  logo,
   dict,
 }) => {
   const [visible, setVisible] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const langRef = useRef<HTMLDivElement>(null);
@@ -33,7 +31,6 @@ export const NavBar: FC<INavBarProps> = ({
   const domain = (params.domain as string) || "wuxi-yuansi";
   const lang = (params.lang as string) || "zh";
   useEffect(() => {
-    setMounted(true);
     const handleClickOutside = (event: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(event.target as Node)) {
         setIsLangOpen(false);
@@ -75,6 +72,14 @@ export const NavBar: FC<INavBarProps> = ({
           href={logoHref}
           className="flex items-center no-underline shrink-0 group"
         >
+          {logo && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={logo}
+              alt={title || "Logo"}
+              className="h-8 w-auto max-w-[120px] object-contain"
+            />
+          )}
           <span className="ml-3 font-bold text-slate-900 text-sm md:text-base tracking-tight truncate max-w-[120px]">
             {title}
           </span>
@@ -96,49 +101,47 @@ export const NavBar: FC<INavBarProps> = ({
         {/* 3. 右侧操作区 */}
         <div className="flex items-center gap-2 md:gap-4">
           {/* 💡 桌面端中英文切换 */}
-          {mounted && (
-            <div className="hidden md:block relative" ref={langRef}>
-              <button
-                onClick={() => setIsLangOpen(!isLangOpen)}
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors text-slate-600 text-sm font-medium border border-transparent hover:border-slate-100"
-              >
-                <IconLanguage size="large" className="text-slate-400" />
-                <span>{isEn ? "EN" : "ZH"}</span>
-                <IconChevronDown
-                  size="small"
-                  className={`transition-transform duration-200 ${
-                    isLangOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
+          <div className="hidden md:block relative" ref={langRef}>
+            <button
+              onClick={() => setIsLangOpen(!isLangOpen)}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-slate-50 transition-colors text-slate-600 text-sm font-medium border border-transparent hover:border-slate-100"
+            >
+              <IconLanguage size="large" className="text-slate-400" />
+              <span>{isEn ? "EN" : "ZH"}</span>
+              <IconChevronDown
+                size="small"
+                className={`transition-transform duration-200 ${
+                  isLangOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
 
-              {/* 下拉菜单浮层 */}
-              {isLangOpen && (
-                <div className="absolute right-0 mt-2 w-32 bg-white border border-slate-100 rounded-xl shadow-xl z-50 py-1 overflow-hidden animate-in fade-in zoom-in duration-200">
-                  <button
-                    onClick={() => handleLanguageChange("zh")}
-                    className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
-                      !isEn
-                        ? "text-blue-600 bg-blue-50/50 font-bold"
-                        : "text-slate-600 hover:bg-slate-50"
-                    }`}
-                  >
-                    简体中文
-                  </button>
-                  <button
-                    onClick={() => handleLanguageChange("en")}
-                    className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
-                      isEn
-                        ? "text-blue-600 bg-blue-50/50 font-bold"
-                        : "text-slate-600 hover:bg-slate-50"
-                    }`}
-                  >
-                    English
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
+            {/* 下拉菜单浮层 */}
+            {isLangOpen && (
+              <div className="absolute right-0 mt-2 w-32 bg-white border border-slate-100 rounded-xl shadow-xl z-50 py-1 overflow-hidden animate-in fade-in zoom-in duration-200">
+                <button
+                  onClick={() => handleLanguageChange("zh")}
+                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                    !isEn
+                      ? "text-blue-600 bg-blue-50/50 font-bold"
+                      : "text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  简体中文
+                </button>
+                <button
+                  onClick={() => handleLanguageChange("en")}
+                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                    isEn
+                      ? "text-blue-600 bg-blue-50/50 font-bold"
+                      : "text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  English
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* {showLogin && (
             <div className="hidden md:block">

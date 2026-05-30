@@ -2,7 +2,6 @@
 
 import { Metadata } from "next";
 
-import { Typography } from "@douyinfe/semi-ui-19";
 import { IconPhone, IconUser } from "@douyinfe/semi-icons";
 import { ProductGrid } from "@/src/components/portal/productGrid";
 import { SectionHeader } from "@/src/components/portal/sectionHeader";
@@ -31,6 +30,31 @@ export default async function PortalHome({
 
   if (!data) return <div className="p-20 text-center">未找到该工厂信息</div>;
 
+  const capabilityItems = [
+    {
+      label: "成立时间",
+      value: data.businessInfo?.foundDate
+        ? new Date(data.businessInfo.foundDate).getFullYear()
+        : "-",
+      suffix: data.businessInfo?.foundDate ? "年" : "",
+    },
+    {
+      label: "员工规模",
+      value: data.businessInfo?.staffCount || "-",
+      suffix: data.businessInfo?.staffCount ? "人" : "",
+    },
+    {
+      label: "年产能",
+      value: data.businessInfo?.annualCapacity || "-",
+      suffix: "",
+    },
+    {
+      label: "主营产品",
+      value: data.businessInfo?.mainProducts || "-",
+      suffix: "",
+    },
+  ];
+
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
       {/* --- 1. Hero 欢迎区域 --- */}
@@ -43,6 +67,9 @@ export default async function PortalHome({
             <p className="text-lg text-slate-500 mb-8">
               {data.slogan ||
                 "领先的工业精密配件制造商，致力于提供高品质金属制品解决方案。"}
+            </p>
+            <p className="text-sm md:text-base text-slate-500 leading-7 mb-8 max-w-xl">
+              {data.intro}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
@@ -59,6 +86,25 @@ export default async function PortalHome({
               PRO
             </span>
           </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 -mt-8 relative z-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+          {capabilityItems.map((item) => (
+            <div
+              key={item.label}
+              className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm"
+            >
+              <div className="text-xs text-slate-400 mb-2">{item.label}</div>
+              <div className="text-xl md:text-2xl font-black text-slate-900 break-words">
+                {item.value}
+                <span className="ml-1 text-sm font-bold text-slate-400">
+                  {item.suffix}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
