@@ -67,6 +67,7 @@ export default async function PortalHome({
   const featuredProducts = categories.flatMap((item) => item.items || []);
   const heroProduct = featuredProducts[0];
   const heroImage = homeConfig.heroImage || heroProduct?.image;
+  const isHeroVideo = /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(heroImage || "");
   const responseItems = [
     {
       title: homeConfig.responseItems?.[0]?.title || "图纸确认",
@@ -110,15 +111,25 @@ export default async function PortalHome({
   return (
     <main className="min-h-screen bg-[#f4f6f8] text-slate-950">
       <section className="relative overflow-hidden bg-slate-900 text-white">
-        {heroImage && (
-          <Image
-            src={heroImage}
-            alt={heroProduct.name || data.name}
-            fill
-            priority
-            className="object-cover opacity-58"
-          />
-        )}
+        {heroImage &&
+          (isHeroVideo ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover opacity-58"
+              src={heroImage}
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          ) : (
+            <Image
+              src={heroImage}
+              alt={heroProduct.name || data.name}
+              fill
+              priority
+              className="object-cover opacity-58"
+            />
+          ))}
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,23,42,0.9)_0%,rgba(15,23,42,0.72)_46%,rgba(15,23,42,0.34)_100%)]" />
         <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
           <div className="max-w-3xl">
