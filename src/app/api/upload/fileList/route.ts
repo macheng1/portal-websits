@@ -73,6 +73,7 @@ export async function POST(request: NextRequest) {
       headers: {
         "X-Forwarded-For": clientIP,
         "User-Agent": headersList.get("user-agent") || "",
+        "x-source-type": "portal-web",
       },
       body: formData,
     });

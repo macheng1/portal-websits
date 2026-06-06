@@ -129,6 +129,7 @@ export async function POST(
         "Content-Type": "application/json",
         "X-Forwarded-For": clientIP,
         "User-Agent": userAgent,
+        "x-source-type": "portal-web",
       },
       body: JSON.stringify(submitBody),
     });

@@ -25,6 +25,7 @@ async function request(
     headers: {
       ...options.headers,
       "x-trace-id": traceId,
+      "x-source-type": "portal-web",
     },
   });
 }
