@@ -107,8 +107,7 @@ export const submitInquiry = async (domain: string, values: any) => {
 };
 
 /**
- * 上传文件（直接调用后端API）
- * 支持多文件，自动构建 FormData
+ * 上传官网询盘附件，经 Next API 转发到后端公共附件上传入口。
  */
 export const uploadFiles = async (files: File | File[]): Promise<any> => {
   const formData = new FormData();
@@ -119,13 +118,14 @@ export const uploadFiles = async (files: File | File[]): Promise<any> => {
     formData.append("file", files);
   }
 
-  const response = await request(`${API_BASE}/upload/fileList`, {
+  const response = await request("/api/upload/fileList", {
     method: "POST",
     body: formData,
   });
 
   if (!response.ok) {
-    throw new Error("文件上传失败");
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.error || error.message || "文件上传失败");
   }
 
   return await response.json();

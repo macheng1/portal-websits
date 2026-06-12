@@ -81,9 +81,9 @@ export const ContactUsContent = ({ data, domain }: any) => {
     const files = Array.from(event.target.files || []);
     if (files.length === 0) return;
 
-    const invalidFile = files.find((file) => file.size > 4 * 1024 * 1024);
+    const invalidFile = files.find((file) => file.size > 5 * 1024 * 1024);
     if (invalidFile) {
-      Toast.error(`${invalidFile.name} 超过 4MB`);
+      Toast.error(`${invalidFile.name} 超过 5MB`);
       event.target.value = "";
       return;
     }
@@ -94,16 +94,15 @@ export const ContactUsContent = ({ data, domain }: any) => {
       const uploaded = response.data || response || [];
       const nextFiles = (Array.isArray(uploaded) ? uploaded : [uploaded])
         .map((item: any, index: number) => ({
-          name: item.name || files[index]?.name || `附件${index + 1}`,
+          name: item.filename || item.name || files[index]?.name || `附件${index + 1}`,
           url: item.url || item,
         }))
         .filter((item: any) => item.url);
 
       setAttachments((prev) => [...prev, ...nextFiles]);
       Toast.success("附件上传成功");
-    } catch (error) {
-      console.error("上传失败:", error);
-      Toast.error("附件上传失败");
+    } catch (error: any) {
+      Toast.error(error.message || "附件上传失败");
     } finally {
       setUploadLoading(false);
       event.target.value = "";
@@ -229,13 +228,13 @@ export const ContactUsContent = ({ data, domain }: any) => {
 
               <div className="mb-4">
                 <div className="mb-2 text-sm font-bold text-slate-700">
-                  图纸附件 (单个最大 4MB)
+                  图纸附件 (单个最大 5MB)
                 </div>
                 <input
                   ref={fileInputRef}
                   type="file"
                   multiple
-                  accept=".pdf,.jpg,.jpeg,.png,.dwg,.zip"
+                  accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.dwg,.zip"
                   className="hidden"
                   onChange={handleFileChange}
                 />
@@ -267,7 +266,7 @@ export const ContactUsContent = ({ data, domain }: any) => {
                 )}
               </div>
               <p className="-mt-2 mb-4 text-xs text-slate-400">
-                支持 PDF、JPG、PNG、DWG、ZIP 格式
+                支持 PDF、JPG、PNG、GIF、WEBP、DWG、ZIP 格式
               </p>
 
               <input
